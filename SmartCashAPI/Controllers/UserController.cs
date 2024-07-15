@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Writers;
 using SmartCashAPI.Models;
@@ -26,23 +28,20 @@ namespace SmartCashAPI.Controllers
             _configuration = configuration;
         }
 
-
-
-
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(string username, string password)
+        public async Task<ActionResult<string>> Login([FromBody] LoginModel login)
         {
-            IdentityUser? user = await _context.Users.SingleOrDefaultAsync(user => user.UserName == username);
+            IdentityUser? user = await _context.Users.SingleOrDefaultAsync(user => user.Email == login.Email);
 
             if (user == null)
             {
-                return Ok();
+                return BadRequest("User does not exist");
 
             }
 
             if (user.PasswordHash == null) throw new Exception("No password hash found for user");
 
-            PasswordVerificationResult passwordsMatch = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+            PasswordVerificationResult passwordsMatch = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, login.Password);
 
             if (passwordsMatch == PasswordVerificationResult.Failed)
             {
@@ -53,12 +52,17 @@ namespace SmartCashAPI.Controllers
 
             if (_configuration["Jwt:Key"] == null) throw new Exception("Hash key not found");
 
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+            string? configurationKey = _configuration["Jwt:Key"];
+
+            if (configurationKey == null) throw new Exception("No key has been found in configuration");
+
+            byte[] key = Encoding.ASCII.GetBytes(configurationKey);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, user.Email)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -69,18 +73,66 @@ namespace SmartCashAPI.Controllers
         }
 
 
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterModel register)
+        {
+            bool userExists = await _context.Users.AnyAsync(user => user.Email == register.Email);
+
+            if (userExists)
+            {
+                return BadRequest("A user with that email already exists");
+            }
+
+            IdentityUser newUser = new IdentityUser()
+            {
+                Email = register.Email
+            };
+
+            newUser.PasswordHash = _passwordHasher.HashPassword(newUser, register.Password);
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            return Ok("Registered successfully");
+
+        }
+
+
 
         public class RegisterModel
         {
-            public string? Email { get; set; }
-            public string? Password { get; set; }
-            public string? Username { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+
+            public RegisterModel()
+            {
+                Email = "defaultEmail";
+                Password = "defaultPassword";
+            }
+
+            public RegisterModel(string email, string password, string username)
+            {
+                Email = email;
+                Password = password;
+            }
         }
 
         public class LoginModel
         {
-            public string? EmailOrUsername { get; set; }
-            public string? Password { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+
+            public LoginModel()
+            {
+                Email = "defaultEmail";
+                Password = "defaultPassword";
+            }
+
+            public LoginModel(string email, string password)
+            {
+                Email = email;
+                Password = password;
+            }
         }
     }
 }
