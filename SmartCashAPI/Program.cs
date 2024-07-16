@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SmartCashAPI.Interfaces;
 using SmartCashAPI.Models;
 using SmartCashAPI.Services;
 
@@ -36,11 +37,16 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<IJwtAuthenticationManager, JwtAuthenticationManager>();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add Identity Service
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
 
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
