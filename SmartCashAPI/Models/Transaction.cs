@@ -4,7 +4,7 @@ namespace SmartCashAPI.Models
 {
     public class Transaction
     {
-        public string? Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public IdentityUser? User { get; set; }
         public string? UserId { get; set; }
         public Category? Category { get; set; }
