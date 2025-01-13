@@ -38,5 +38,20 @@ public class TransactionController : ControllerBase
 
         return Ok(newTransaction);
     }
+
+    [HttpPost("CreateMultipleTransactions")]
+    public async Task<ActionResult> CreateMultipleTransactions([FromBody] List<TransactionDto> transactions)
+    {
+        foreach (TransactionDto transaction in transactions)
+        {
+            Transaction newTransaction = _mapper.Map<Transaction>(transaction);
+            await _context.Transactions.AddAsync(newTransaction);
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Ok("Transactions created");
+    }
+
 }
 
