@@ -36,7 +36,6 @@ namespace SmartCashAPI.Controllers
             if (user == null)
             {
                 return BadRequest("User does not exist");
-
             }
 
             if (user.PasswordHash == null) throw new Exception("No password hash found for user");
@@ -62,7 +61,8 @@ namespace SmartCashAPI.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                new Claim(ClaimTypes.Name, user.Email)
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim("userId", user.Id)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

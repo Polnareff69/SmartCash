@@ -15,6 +15,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IApplicatio
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Category>().HasOne(c => c.User).WithMany(u => u.Categories).HasForeignKey(c => c.UserId);
+        modelBuilder.Entity<Transaction>().HasOne(t => t.Category).WithMany(t => t.Transactions).HasForeignKey(t => t.CategoryId).OnDelete(DeleteBehavior.Cascade);
+
     }
 
 

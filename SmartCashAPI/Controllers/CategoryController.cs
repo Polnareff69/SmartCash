@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartCashAPI.DTOs;
@@ -20,7 +21,8 @@ namespace SmartCashAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetAllCategories")]
+        //[Authorize]
+        [HttpGet]
         public async Task<ActionResult<List<CategoryDto>>> GetAllUserCategories()
         {
             return Ok(_mapper.Map<List<CategoryDto>>(await _context.Categories.ToListAsync()));
