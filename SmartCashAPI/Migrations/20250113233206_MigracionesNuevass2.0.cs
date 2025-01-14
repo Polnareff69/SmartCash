@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartCashAPI.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.cs
-    public partial class NuevasMigraciones : Migration
-========
-    public partial class TablesCreation : Migration
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.cs
+    public partial class MigracionesNuevass20 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,7 +55,6 @@ namespace SmartCashAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -207,59 +202,23 @@ namespace SmartCashAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.cs
-========
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Categories_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.cs
                 name: "Transactions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.cs
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amount = table.Column<double>(type: "float", nullable: true),
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-========
-                    CategoryId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CategoryId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Amount = table.Column<double>(type: "float", nullable: true),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.cs
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
                     table.ForeignKey(
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.cs
                         name: "FK_Transactions_ApplicationUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "ApplicationUsers",
-========
-                        name: "FK_Transactions_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.cs
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Transactions_AspNetUsers_UserId",
@@ -267,18 +226,11 @@ namespace SmartCashAPI.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.cs
                         name: "FK_Transactions_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-========
-                        name: "FK_Transactions_Categories_CategoryId1",
-                        column: x => x.CategoryId1,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.cs
                 });
 
             migrationBuilder.CreateIndex(
@@ -331,15 +283,9 @@ namespace SmartCashAPI.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.cs
                 name: "IX_Transactions_CategoryId",
                 table: "Transactions",
                 column: "CategoryId");
-========
-                name: "IX_Transactions_CategoryId1",
-                table: "Transactions",
-                column: "CategoryId1");
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_UserId",
@@ -370,9 +316,6 @@ namespace SmartCashAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

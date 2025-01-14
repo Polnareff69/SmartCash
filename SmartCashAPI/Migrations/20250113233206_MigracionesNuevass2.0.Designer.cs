@@ -12,13 +12,8 @@ using SmartCashAPI.Models;
 namespace SmartCashAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.Designer.cs
-    [Migration("20250113225100_NuevasMigraciones")]
-    partial class NuevasMigraciones
-========
-    [Migration("20240921162123_TablesCreation")]
-    partial class TablesCreation
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.Designer.cs
+    [Migration("20250113233206_MigracionesNuevass2.0")]
+    partial class MigracionesNuevass20
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -315,14 +310,7 @@ namespace SmartCashAPI.Migrations
                     b.Property<Guid?>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.Designer.cs
                     b.Property<Guid>("CategoryId")
-========
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("CategoryId1")
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.Designer.cs
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -335,7 +323,7 @@ namespace SmartCashAPI.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("CategoryId1");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -412,13 +400,9 @@ namespace SmartCashAPI.Migrations
 
                     b.HasOne("SmartCashAPI.Models.Category", "Category")
                         .WithMany("Transactions")
-<<<<<<<< HEAD:SmartCashAPI/Migrations/20250113225100_NuevasMigraciones.Designer.cs
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-========
-                        .HasForeignKey("CategoryId1");
->>>>>>>> f6020d2b617864bab706401a3ef7a3bef864c6e0:SmartCashAPI/Migrations/20240921162123_TablesCreation.Designer.cs
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()

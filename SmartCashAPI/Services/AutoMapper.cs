@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SmartCashAPI.DTOs;
+using SmartCashAPI.DTOs.CategoryDtos;
 using SmartCashAPI.Models;
 
 namespace SmartCashAPI.Services
@@ -8,6 +9,7 @@ namespace SmartCashAPI.Services
     {
         public AutoMapper()
         {
+            CreateMap<Category, CreateCategoryDto>().ReverseMap();
             CreateMap<Transaction, TransactionDto>().ReverseMap();
             CreateMap<Category, CategoryDto>().ReverseMap();
         }

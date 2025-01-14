@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartCashAPI.DTOs;
+using SmartCashAPI.DTOs.CategoryDtos;
 using SmartCashAPI.Interfaces;
 using SmartCashAPI.Models;
 
@@ -30,7 +31,7 @@ namespace SmartCashAPI.Controllers
 
         [HttpPost("CreateCategory")]
 
-        public async Task<ActionResult> CreateCategory([FromBody] CategoryDto category)
+        public async Task<ActionResult> CreateCategory([FromBody] CreateCategoryDto category)
         {
             if (category == null) throw new Exception("Cannot create null category");
 
